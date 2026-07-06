@@ -11,7 +11,6 @@ Python backtester for a simple moving average crossover strategy using historica
 
 # Technologies
 - Python
-- NumPy
 - Pandas
 - matplotlib
 - yfinance
