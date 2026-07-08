@@ -18,4 +18,4 @@ Python backtester for a simple moving average crossover strategy using historica
 - yfinance
 
 ## Buy/Sell Signals
-![Signals](Pictures/Figure_1.png)
+![Signals](images/sma_crossover_AAPL_2020-01-01_to_2026-01-01.png)

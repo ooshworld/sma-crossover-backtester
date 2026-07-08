@@ -119,6 +119,11 @@ def plot_results(data):
     plt.ylabel('Price')
     plt.legend()
     plt.grid(True)
+    plt.savefig(
+        f'images/sma_crossover_{TICKER}_{START_DATE}_to_{END_DATE}.png',
+        dpi=300,
+        bbox_inches='tight'
+    )
     plt.show()
 
 def calculate_performance_metrics(data):
