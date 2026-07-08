@@ -2,12 +2,14 @@ import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
 
-TICKER = "GOOGL"
+TICKER = "AAPL"
 START_DATE = "2020-01-01"
 END_DATE = "2026-01-01"
 
 FAST_SMA = 15
 SLOW_SMA = 35
+
+COMMISSION = 0.001
 
 def download_data():
     """
@@ -42,7 +44,6 @@ def run_backtest(data):
     Returns:
         DataFrame with cumulative returns for both the market and the strategy.
     """
-    COMMISSION = 0.001
     data['TRADING_COST'] = data['Trade'] * COMMISSION
     data['Return'] = data['Close'].pct_change()
     data['Strategy_Return'] = (data['Signal'].shift(1) * data['Return']) - data['TRADING_COST']
