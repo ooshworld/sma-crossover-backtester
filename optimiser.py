@@ -1,5 +1,7 @@
 import os
 import pandas as pd
+import matplotlib.pyplot as plt
+from config import TICKER
 
 from strategy import generate_signals
 from backtest import run_backtest
@@ -29,6 +31,9 @@ def optimise_sma(
                 strategy_data,
                 commission
             )
+
+            if strategy_data.empty:
+                continue
 
             metrics = calculate_performance_metrics(
                 strategy_data
@@ -67,4 +72,49 @@ def optimise_sma(
         ].head(10)
     )
 
+    create_heatmap(results, metric)
+
     return results
+
+
+def create_heatmap(
+        results: pd.DataFrame,
+        metric: str
+):
+    heatmap = results.pivot(
+        index='Fast SMA',
+        columns='Slow SMA',
+        values=metric
+    )
+
+    plt.figure(figsize=(12, 8))
+
+    plt.imshow(
+        heatmap,
+        origin='lower',
+        aspect='auto'
+    )
+
+    plt.colorbar(label=metric)
+
+    plt.xticks(
+        range(len(heatmap.columns)),
+        heatmap.columns
+    )
+
+    plt.yticks(
+        range(len(heatmap.index)),
+        heatmap.index
+    )
+
+    plt.xlabel('Slow SMA')
+    plt.ylabel('Fast SMA')
+    plt.title(f'{TICKER} - {metric} Heatmap')
+    plt.tight_layout()
+    plt.savefig(
+        f'optimisation_results/{TICKER}_heatmap.png',
+        dpi=300
+    )
+
+    plt.show()
+
