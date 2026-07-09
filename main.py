@@ -1,9 +1,10 @@
-from config import TICKER, START_DATE, END_DATE, FAST_SMA, SLOW_SMA, COMMISSION
+from config import TICKER, START_DATE, END_DATE, FAST_SMA, SLOW_SMA, COMMISSION, FAST_RANGE, SLOW_RANGE, RUN_OPTIMISER
 from data_loader import download_data
 from strategy import generate_signals
 from backtest import run_backtest
 from metrics import calculate_performance_metrics
 from plotting import plot_results
+from optimiser import optimise_sma
 
 
 
@@ -27,21 +28,35 @@ def main():
         END_DATE
     )
 
-    data = generate_signals(
+    strategy_data = generate_signals(
         data,
         FAST_SMA,
         SLOW_SMA
     )
 
-    data = run_backtest(
-        data,
+    strategy_data = run_backtest(
+        strategy_data,
         COMMISSION
     )
 
-    metrics = calculate_performance_metrics(data)
+    metrics = calculate_performance_metrics(strategy_data)
+
     print_metrics(metrics)
 
-    plot_results(data, TICKER, FAST_SMA, SLOW_SMA)
+    plot_results(
+        strategy_data, 
+        TICKER, 
+        FAST_SMA, 
+        SLOW_SMA)
+    
+    if RUN_OPTIMISER:
+        optimise_sma(
+            data=data,
+            fast_range=FAST_RANGE,
+            slow_range=SLOW_RANGE,
+            commission=COMMISSION,
+            metric='Sharpe Ratio'
+        )
 
 
 if __name__ == "__main__":
