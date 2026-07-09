@@ -1,6 +1,9 @@
 import pandas as pd
 
 def calculate_performance_metrics(data: pd.DataFrame):
+
+    if data.empty:
+        raise ValueError('Cannot calculate metrics: empty DataFrame')
     
     total_market_return = data['Cumulative_Market'].iloc[-1] - 1
 
